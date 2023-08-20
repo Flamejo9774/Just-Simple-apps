@@ -3,11 +3,9 @@ Just Simple Apps cause todays apps are too complicated
 
 ### NOTE:
 You need PyQt5
-and pyQt5 Tools
 
 ```
 Pip install PyQt5
-pip install PyQt5 PyQt5-tools
 ```
 ## Just Calculator
  - A simple calculator with a save function Written in python
