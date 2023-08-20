@@ -1,10 +1,19 @@
 #!/usr/bin/env python
 import sys
-from PyQt5.QtWidgets import QDialog, QLabel, QApplication, QMainWindow, QTextEdit, QScrollBar, QAction, QFileDialog, QMenuBar, QVBoxLayout, QWidget, QFontComboBox, QMenu, QWidgetAction
-from PyQt5.QtCore import Qt, QEvent
-from PyQt5.QtGui import QPainter, QColor, QBrush
-from PyQt5.QtGui import QFont
+from PyQt5.QtWidgets import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtPrintSupport import *
 import subprocess
+import os
+
+
+
+def splitext(p):
+    return os.path.splitext(p)[1].lower()
+def get_file_extension(file_path):
+    _, extension = os.path.splitext(file_path)
+    return extension.lower()
 
 class AboutWindow(QDialog):
     def __init__(self, version):
@@ -66,6 +75,11 @@ class texteditor(QMainWindow):
         new_action.setShortcut("Ctrl+N")
         new_action.triggered.connect(self.new_file)
         file_menu.addAction(new_action)
+
+        print_action = QAction("Print", self)
+        print_action.setShortcut("Ctrl+P")
+        print_action.triggered.connect(self.file_print)
+        file_menu.addAction(print_action)
 
         open_action = QAction("Open", self)
         open_action.setShortcut("Ctrl+O")
@@ -155,10 +169,13 @@ class texteditor(QMainWindow):
         self.strikethrough_action.setCheckable(True)
         self.strikethrough_action.triggered.connect(self.toggle_strikethrough)
         edit_menu.addAction(self.strikethrough_action)
+
+
     def open_about_window(self):
         about_version = "1.15.7"
         about_window = AboutWindow(about_version)
         about_window.exec_()
+
 
     def paintEvent(self, event):
         painter = QPainter(self)
@@ -167,46 +184,60 @@ class texteditor(QMainWindow):
         painter.setBrush(QBrush(self.menu_background_color))
         painter.drawRect(self.rect())
 
+
     def new_file(self):
         self.text_edit.clear()
         self.current_file = None
         self.update_title()
+
+
     def opencommandfile(self,file_name):
         if file_name:
             with open(file_name, "r") as file:
                 self.text_edit.setPlainText(file.read())
                 self.current_file = file_name
                 self.update_title()
+
+
     def open_file(self):
         options = QFileDialog.Options()
-        file_name, _ = QFileDialog.getOpenFileName(self, "Open Text File", "","Text Files (*.txt);;Python Files (*.py);;All Files (*)", options=options)
+        file_name, _ = QFileDialog.getOpenFileName(self, "Open Text File", "","Text Files (*.txt);;Python Files (*.py);;HTML files (*.html);;All Files (*)", options=options)
         if file_name:
             with open(file_name, "r") as file:
-                self.text_edit.setPlainText(file.read())
+                self.text_edit.setHtml(file.read())
                 self.current_file = file_name
                 self.update_title()
 
     def save_file(self):
         if self.current_file:
             with open(self.current_file, "w") as file:
-                file.write(self.text_edit.toPlainText())
+                ending = get_file_extension(self.current_file)
+                if ending == ".html":
+                    file.write(self.text_edit.toHtml())
+                else:
+                    file.write(self.text_edit.toPlainText())
         else:
             self.save_as_file()
 
+
     def save_as_file(self):
         options = QFileDialog.Options()
-        file_name, _ = QFileDialog.getSaveFileName(self, "Save Text File", "", "Text Files (*.txt);;Python Files (*.py);;All Files (*)", options=options)
+        file_name, ending = QFileDialog.getSaveFileName(self, "Save Text File", "", "Text Files (*.txt);;Python Files (*.py);;HTML files (*.html);;All Files (*)", options=options)
         if file_name:
             with open(file_name, "w") as file:
-                file.write(self.text_edit.toPlainText())
+                if ending == "HTML files (*.html)":
+                    file.write(self.text_edit.toHtml())
+                else:
+                    file.write(self.text_edit.toPlainText())
                 self.current_file = file_name
                 self.update_title()
+
 
     def update_title(self):
         if self.current_file:
             self.setWindowTitle(f"{self.current_file} - Just Text Editor")
         else:
-            self.setWindowTitle("Untitled.txt - Just Text Editor")
+            self.setWindowTitle("Untitled - Just Text Editor")
 
     def change_font(self, font):
         self.text_edit.setCurrentFont(font)
@@ -257,6 +288,11 @@ class texteditor(QMainWindow):
         for action in self.size_actions:
             action.setChecked(action.text() == str(selected_size))
 
+    def file_print(self):
+        dlg = QPrintDialog()
+        if dlg.exec_():
+            self.editor.print_(dlg.printer())
+
 
     def run_python_script(self):
         if self.current_file and self.current_file.endswith(".py"):
@@ -281,7 +317,6 @@ if __name__ == "__main__":
     window = texteditor()
     window.setGeometry(200, 200, 600, 400)
     window.show()
-    print(sys.argv)
     if len(sys.argv) != 2:
         pass
     else:
