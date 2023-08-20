@@ -1,4 +1,4 @@
-# Just-apps
+# Just Simple Apps
 my Simple Just Apps cause todays apps are too complicated
 
 Just Calculator
