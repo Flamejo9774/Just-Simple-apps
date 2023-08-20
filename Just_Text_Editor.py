@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import sys
 from PyQt5.QtWidgets import QDialog, QLabel, QApplication, QMainWindow, QTextEdit, QScrollBar, QAction, QFileDialog, QMenuBar, QVBoxLayout, QWidget, QFontComboBox, QMenu, QWidgetAction
 from PyQt5.QtCore import Qt, QEvent

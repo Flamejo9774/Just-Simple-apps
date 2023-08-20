@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import sys
 import os
 from PyQt5.QtCore import Qt, QTimer, QVariantAnimation
@@ -39,7 +40,7 @@ class SaveSlotsWidget(QWidget):
 
 
     def saveToSaves(self):
-        with open("saved.jstcalc", "w") as file:
+        with open("savedcalc.jstsmp", "w") as file:
             for text_field in self.save_text_fields:
                 text = text_field.text()
                 file.write(text + "\n")
@@ -47,7 +48,7 @@ class SaveSlotsWidget(QWidget):
 
     def loadFromSaves(self):
         try:
-            with open("saved.jstcalc", "r") as file:
+            with open("savedcalc.jstsmp", "r") as file:
                 lines = file.readlines()
                 for i, line in enumerate(lines):
                     if i < len(self.save_text_fields):

@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import sys
 import os
 from PyQt5.QtWidgets import QApplication, QMainWindow, QTreeView, QFileSystemModel, QVBoxLayout, QWidget, QAction, QDialog, QLabel, QMenu
