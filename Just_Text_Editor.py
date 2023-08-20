@@ -14,11 +14,11 @@ class AboutWindow(QDialog):
 
         layout = QVBoxLayout()
 
-        label = QLabel("Just Text Editor\n{}\n© 2023–2023 Just Apps\n".format(version))
+        label = QLabel("Just Text Editor\n{}\n© 2023–2023 Just Simple Apps\n".format(version))
         label.setAlignment(Qt.AlignCenter)
         layout.addWidget(label)
 
-        link_label = QLabel('<a href="https://github.com/Flamejo9774/Just-apps">Other Just Apps</a>')
+        link_label = QLabel('<a href="https://github.com/Flamejo9774/Just-apps">Other Just Simple Apps</a>')
         link_label.setOpenExternalLinks(True)
         link_label.setTextInteractionFlags(Qt.LinksAccessibleByMouse)
         link_label.setAlignment(Qt.AlignCenter)
