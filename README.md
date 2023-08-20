@@ -3,9 +3,9 @@ Just Simple Apps cause todays apps are too complicated
 
 ###NOTE:
 these apps need the following python libarys                                        
-PyQt5 Built-in os,sys,subprocess                                                           
+PyQt5 Built-in os,sys,subprocess
 ```
-pip install PyQt5                                                             
+pip install PyQt5
 ```
 ##Just Calculator
  - a simple calculator with a save function Written in python
