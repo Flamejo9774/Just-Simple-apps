@@ -1,5 +1,5 @@
 # Just Simple Apps
-my Simple Just Apps cause todays apps are too complicated
+Just Simple Apps cause todays apps are too complicated
 
 Just Calculator
 a simple calculator with a save function Written in python
